@@ -1,30 +1,34 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable prefer-destructuring */
+const body = document.querySelector<HTMLBodyElement | null>('.body');
 const btn = document.querySelectorAll<HTMLButtonElement | null>('.btn');
 const board = document.querySelector<HTMLDivElement | null>('.board-container');
 const stats = document.querySelector<HTMLDivElement | null>('.stats');
 const statsSeconds = document.querySelector<HTMLDivElement | null>('.stats___times--p');
 const statsMoves = document.querySelector<HTMLDivElement | null>('.stats__moves--p');
-// const statsPoints = document.querySelector<HTMLElement | null>('.stats__points--p');
+const statsPoints = document.querySelector<HTMLParagraphElement | null>('.stats___points--p');
 const cards = document.querySelectorAll<HTMLDivElement | null>('.card');
 const cardsValue = document.querySelectorAll<HTMLDivElement | null>('.card-value');
 const possValue = ['🍾', '🍾', '👆', '👆', '🤯', '🤯'];
-
+console.log(statsPoints.innerText);
 let seconds = 0;
 let countClicks = 0;
 let nowValue = '';
-// let points = 0;
+let points = 0;
 
 // functions
-//
-function incrementSeconds() {
+const setTime = () => {
   seconds += 1;
-  statsSeconds.innerHTML = `Your time: ${seconds} seconds`;
+  statsSeconds.innerHTML = `Time: ${seconds} seconds`;
+};
+
+let intervalID:NodeJS.Timer;
+function start() {
+  intervalID = setInterval(setTime, 1000);
 }
-// function addPoints () {
-//   points += 1;
-//   statsPoints.innerHTML = `Points: ${points} seconds`;
-// }
+function stop() {
+  clearInterval(intervalID);
+}
 const shuffle = (array:string[]) => {
   let i = 0;
   let j = 0;
@@ -41,7 +45,6 @@ const clickCounter = () => {
   countClicks += 1;
   statsMoves.innerHTML = `Clicks: ${countClicks}`;
 };
-
 // eventListeners
 btn[0]?.addEventListener('click', () => {
   shuffle(possValue);
@@ -56,11 +59,28 @@ btn[0]?.addEventListener('click', () => {
   board.classList.remove('d-none');
   btn[1].classList.remove('d-none');
   stats.classList.remove('d-none');
-  setInterval(incrementSeconds, 1000);
+  start();
   btn[0].classList.add('d-none');
 });
+const congrats = () => {
+  board.classList.add('d-none');
+  btn[1].classList.add('d-none');
+  btn[2].classList.remove('d-none');
+  stop();
+  body.style.backgroundColor = 'black';
+};
+function addPoints() {
+  points += 1;
+  statsPoints.innerHTML = `Points: ${points}00`;
+  if (points === 3) {
+    setInterval(congrats, 1000);
+  }
+}
 
 btn[1]?.addEventListener('click', () => {
+  window.location.reload();
+});
+btn[2]?.addEventListener('click', () => {
   window.location.reload();
 });
 // this part for cards
@@ -78,37 +98,43 @@ let idArr:string[] = [];
     idArr.push(nowId);
     const x = Number(idArr[0]);
     const y = Number(idArr[1]);
+    if (clicked.length === 1) {
+      console.log('choose one more');
+      // cards[x].classList.add('is-flipped');
+      console.log(clicked, idArr);
+    }
     if (clicked[0] === clicked[1] && clicked.length === 2 && x !== y) {
-      const keepCardsFlipped = () => {
-        cards[x].classList.add('is-flipped');
-        cards[y].classList.add('is-flipped');
+      const hide = () => {
+        cards[x].classList.add('d-none');
+        cards[y].classList.add('d-none');
       };
-      // addPoints();
-      keepCardsFlipped();
+      cards[x].classList.add('is-flipped');
+      cards[y].classList.add('is-flipped');
+      setInterval(hide, 300);
+      addPoints();
+      console.log(clicked, idArr);
       clicked = [];
       idArr = [];
       console.log(clicked, idArr);
-    } else if (clicked[0] !== clicked[1] && clicked.length === 2 && x !== y) {
+    } else if (clicked.length === 2 && clicked[0] !== clicked[1] && x !== y) {
       const flipCardBack = () => {
         cards[x].classList.remove('is-flipped');
         cards[y].classList.remove('is-flipped');
       };
       setInterval(flipCardBack, 1000);
+      console.log(clicked, idArr);
       idArr = []; clicked = [];
       console.log(clicked, idArr);
-     
     } else if (clicked[0] === clicked[1] && clicked.length === 2 && x === y) {
       const flipCardBack = () => {
         cards[x].classList.remove('is-flipped');
         cards[y].classList.remove('is-flipped');
       };
+      // eslint-disable-next-line no-alert
       alert('you can not choose one element TWICE 🤦‍♀️');
       setInterval(flipCardBack, 600);
       idArr = [];
-
-      clicked = []; console.log(clicked, idArr);
-    } else {
-      console.log('choose on more');
+      clicked = [];
       console.log(clicked, idArr);
     }
   //   if (cards[0].classList.value.includes('is-flipped') === true

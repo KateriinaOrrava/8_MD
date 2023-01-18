@@ -9,15 +9,19 @@
     <link rel="stylesheet" href="/styles.css">
     <title>Document</title>
 </head>
-<body>
+<body class="body">
 <!--Create an HTML file and link the scripts.ts file
 Create a div container with class "memory-game"
 Create a div for each card, with a class "card"-->
 <div class="game">
-    <div class="controls">
+  
+  <div class="controls">
+
         <button class="btn btn-start">Start</button>
-        <button class="btn btn-restart  d-none">Back</button>
-    </div>
+        <!-- <div class="question"><p class="again d-none">Play again?</p></div> -->
+        <button class="btn btn-restart d-none">Back</button>
+        <button class="btn btn-again d-none">One more?</button>
+  </div>
     <div class="stats d-none">
             <div class="stats__moves"><p class="stats__moves--p">Clicks: 0</p></div>
             <div class="stats__timer"><p class="stats___times--p">Time: 0 seconds</p></div>
@@ -30,40 +34,39 @@ Create a div for each card, with a class "card"-->
                   <div class="card__face card__face--front"><p class="card__face--front image-heart">❤️</p></div>
                   <div class="card__face card__face--back"><p class="card-value"></p></div>
                 </div>
-              </div>
-              <div class="scene scene--card">
+            </div>
+            <div class="scene scene--card">
                 <div class="card" id='1'>
                   <div class="card__face card__face--front"><p class="card__face--front image-heart">❤️</p></div>
                   <div class="card__face card__face--back"><p class="card-value"></p></div>
                 </div>
-              </div>
-              <div class="scene scene--card">
+            </div>
+            <div class="scene scene--card">
                 <div class="card" id='2'>
                   <div class="card__face card__face--front"><p class="card__face--front image-heart">❤️</p></div>
                   <div class="card__face card__face--back"><p class="card-value"></p></div>
                 </div>
-              </div>
-              <div class="scene scene--card">
+            </div>
+            <div class="scene scene--card">
                 <div class="card" id='3'>
                   <div class="card__face card__face--front"><p class="card__face--front image-heart">❤️</p></div>
                   <div class="card__face card__face--back"><p class="card-value"></p></div>
                 </div>
-              </div>
-              <div class="scene scene--card">
+            </div>
+            <div class="scene scene--card">
                 <div class="card" id='4'>
                   <div class="card__face card__face--front"><p class="card__face--front image-heart">❤️</p></div>
                   <div class="card__face card__face--back"><p class="card-value"></p></div>
                 </div>
-              </div>
-              <div class="scene scene--card">
+            </div>
+            <div class="scene scene--card">
                 <div class="card" id='5'>
                   <div class="card__face card__face--front"><p class="card__face--front image-heart">❤️</p></div>
                   <div class="card__face card__face--back"><p class="card-value"></p></div>
                 </div>
-              </div>
-             
             </div>
-        <div class="win">You won!</div>
+            </div>
+            
     </div>
 
 
