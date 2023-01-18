@@ -9,7 +9,7 @@ const statsMoves = document.querySelector<HTMLDivElement | null>('.stats__moves-
 const statsPoints = document.querySelector<HTMLParagraphElement | null>('.stats___points--p');
 const cards = document.querySelectorAll<HTMLDivElement | null>('.card');
 const cardsValue = document.querySelectorAll<HTMLDivElement | null>('.card-value');
-const possValue = ['🍾', '🍾', '👆', '👆', '🤯', '🤯'];
+const possValue = ['😵‍💫', '😵‍💫', '🥴', '🥴', '🤯', '🤯'];
 console.log(statsPoints.innerText);
 let seconds = 0;
 let countClicks = 0;
