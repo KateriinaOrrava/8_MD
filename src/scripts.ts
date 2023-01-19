@@ -7,6 +7,7 @@ const stats = document.querySelector<HTMLDivElement | null>('.stats');
 const statsSeconds = document.querySelector<HTMLDivElement | null>('.stats___times--p');
 const statsMoves = document.querySelector<HTMLDivElement | null>('.stats__moves--p');
 const statsPoints = document.querySelector<HTMLParagraphElement | null>('.stats___points--p');
+const question = document.querySelector<HTMLParagraphElement | null>('.question');
 const cards = document.querySelectorAll<HTMLDivElement | null>('.card');
 const cardsValue = document.querySelectorAll<HTMLDivElement | null>('.card-value');
 const possValue = ['😵‍💫', '😵‍💫', '🥴', '🥴', '🤯', '🤯'];
@@ -15,20 +16,15 @@ let seconds = 0;
 let countClicks = 0;
 let nowValue = '';
 let points = 0;
-
+let intervalID:any;
+let nowId:string;
+let clicked:string[] = [];
+let idArr:string[] = [];
 // functions
 const setTime = () => {
   seconds += 1;
   statsSeconds.innerHTML = `Time: ${seconds} seconds`;
 };
-
-let intervalID:NodeJS.Timer;
-function start() {
-  intervalID = setInterval(setTime, 1000);
-}
-function stop() {
-  clearInterval(intervalID);
-}
 const shuffle = (array:string[]) => {
   let i = 0;
   let j = 0;
@@ -45,23 +41,37 @@ const clickCounter = () => {
   countClicks += 1;
   statsMoves.innerHTML = `Clicks: ${countClicks}`;
 };
+function reload() {
+  window.location.reload();
+}
+function start() {
+  intervalID = setInterval(setTime, 1000);
+}
+function stop() {
+  clearInterval(intervalID);
+}
 // eventListeners
 btn[0]?.addEventListener('click', () => {
   shuffle(possValue);
-  // eslint-disable-next-line prefer-destructuring
-  cardsValue[0].innerHTML = possValue[0];
-  cardsValue[1].innerHTML = possValue[1];
-  cardsValue[2].innerHTML = possValue[2];
-  cardsValue[3].innerHTML = possValue[3];
-  cardsValue[4].innerHTML = possValue[4];
-  cardsValue[5].innerHTML = possValue[5];
+  for (let i = 0; i < possValue.length; i += 1) {
+    cardsValue[i].innerHTML = possValue[i];
+  }
+  // cardsValue[0].innerHTML = possValue[0];
+  // cardsValue[1].innerHTML = possValue[1];
+  // cardsValue[2].innerHTML = possValue[2];
+  // cardsValue[3].innerHTML = possValue[3];
+  // cardsValue[4].innerHTML = possValue[4];
+  // cardsValue[5].innerHTML = possValue[5];
   console.log("LET'S START THE GAME!");
+
   board.classList.remove('d-none');
   btn[1].classList.remove('d-none');
   stats.classList.remove('d-none');
   start();
   btn[0].classList.add('d-none');
+  question.classList.add('d-none');
 });
+
 const congrats = () => {
   board.classList.add('d-none');
   btn[1].classList.add('d-none');
@@ -69,28 +79,26 @@ const congrats = () => {
   stop();
   body.style.backgroundColor = 'black';
 };
-function addPoints() {
-  points += 1;
-  statsPoints.innerHTML = `Points: ${points}00`;
-  if (points === 3) {
-    setInterval(congrats, 1000);
-  }
-}
 
+function addPoints() {
+  points += 100;
+  if (points === 300) {
+    setInterval(congrats, 1000);
+  }statsPoints.innerHTML = `Points: ${points - seconds}`;
+}
 btn[1]?.addEventListener('click', () => {
   window.location.reload();
 });
 btn[2]?.addEventListener('click', () => {
   window.location.reload();
 });
-// this part for cards
-let nowId:string;
-let clicked:string[] = [];
-let idArr:string[] = [];
-
 [...cards].forEach((card) => {
   card.addEventListener('click', () => {
     card.classList.add('is-flipped');
+    if (countClicks > 60) {
+      alert('Have a rest and try again :(');
+      reload();
+    }
     clickCounter();
     nowValue = card.children[1].innerHTML;
     clicked.push(nowValue);
@@ -99,8 +107,7 @@ let idArr:string[] = [];
     const x = Number(idArr[0]);
     const y = Number(idArr[1]);
     if (clicked.length === 1) {
-      console.log('choose one more');
-      // cards[x].classList.add('is-flipped');
+      console.log('choose one more ...');
       console.log(clicked, idArr);
     }
     if (clicked[0] === clicked[1] && clicked.length === 2 && x !== y) {
@@ -137,13 +144,5 @@ let idArr:string[] = [];
       clicked = [];
       console.log(clicked, idArr);
     }
-  //   if (cards[0].classList.value.includes('is-flipped') === true
-  //  && cards[1].classList.value.includes('is-flipped')
-  //  && cards[2].classList.value.includes('is-flipped')
-  //  && cards[3].classList.value.includes('is-flipped')
-  //  && cards[4].classList.value.includes('is-flipped')
-  //  && cards[5].classList.value.includes('is-flipped')) {
-  //     alert('you flipped all cards');
-  //   }
   });
 });
